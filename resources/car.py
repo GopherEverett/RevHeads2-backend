@@ -2,7 +2,6 @@ import models
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
 from playhouse.shortcuts import model_to_dict
-
 car =Blueprint('cars', 'car', url_prefix='/cars')
 
 @car.route('/', methods=["GET"])
@@ -39,14 +38,14 @@ def create_cars():
     payload = request.get_json()
     print(type(payload), 'payload')
     car = models.Car.create(name=payload['name'], builder=current_user.id, make=payload['make'], model=payload['model'], year=payload['year'], photo_url=payload['photo_url'])
-    car = models.Car.create(**payload)
+    # car = models.Car.create(**payload)
     print(car.__dict__)
     print(dir(car))
     print(model_to_dict(car), 'model to dict')
     car_dict = model_to_dict(car)
     return jsonify(data=car_dict, status={"code": 201, "message": "Success"})
 
-@car.route('/<id>', methods=["Delete"])
+@car.route('/<id>', methods=["DELETE"])
 @login_required
 def delete_car(id):
     query = models.Car.delete().where(models.Car.id==id)
@@ -57,6 +56,8 @@ def delete_car(id):
 @login_required
 def update_car(id):
     payload = request.get_json()
+    print(payload)
+    print(type(payload), 'payload')
     query = models.Car.update(**payload).where(models.Car.id==id)
     query.execute()
     return jsonify(data=model_to_dict(models.Car.get_by_id(id)), status={"code": 200, "message": "resource updated successfully"})

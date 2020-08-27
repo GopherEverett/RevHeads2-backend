@@ -2,9 +2,18 @@ import models
 from flask import Blueprint, jsonify, request
 from playhouse.shortcuts import model_to_dict
 from flask_bcrypt import generate_password_hash, check_password_hash
-from flask_login import login_user, current_user, logout_user
+from flask_login import login_user, current_user, logout_user, login_required
 
 user =Blueprint('users', 'user', url_prefix='/user')
+
+@user.route('/', methods=["GET"])
+def get_all_users():
+    try:
+        users = [model_to_dict(user) for user in models.User.select()]
+        print(users)
+        return jsonify(data=users, status={"code": 200, "message": "Success"})
+    except models.DoesNotExist:
+        return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
 
 @user.route('/register', methods=["POST"])
 def register():
@@ -48,3 +57,10 @@ def logout():
     logout_user()
     return jsonify(data={}, status={'code': 200, 'message': 'successful logout'})
 
+@user.route('/builder/<builderid>', methods=["GET"])
+@login_required
+def get_one_builder(builderid):
+    print(builderid, 'reserved word?')
+    builder = models.User.get_by_id(builderid)
+    print(builder.__dict__)
+    return jsonify(data=model_to_dict(builder), status={"code": 200, "message": "Success"})
