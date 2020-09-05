@@ -53,20 +53,6 @@ CORS(project, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(project, url_prefix='/api/v1/projects')
 
 
-@app.before_request
-def before_request():
-    """Connect to the db before each request"""
-    g.db = models.DATABASE
-    g.db.connect()
-
-
-@app.after_request
-def after_request(response):
-    """Close the db connetion after each request"""
-    g.db.close()
-    return response
-
-
 if 'ON_HEROKU' in os.environ:
     print('\non heroku!')
     models.initialize()
