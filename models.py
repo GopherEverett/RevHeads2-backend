@@ -1,8 +1,14 @@
 from peewee import *
 import datetime
+import os
 from flask_login import UserMixin
+from playhouse.db_url import connect
 
-DATABASE = SqliteDatabase('revheads.sqlite')
+if 'ON_HEROKU' in os.environ:
+    DATABASE = connect(os.environ.get('DATABASE_URL'))
+else:
+    DATABASE = SqliteDatabase('dogs.sqlite')
+
 
 class User(UserMixin, Model):
     username = CharField(unique=True)
@@ -16,6 +22,7 @@ class User(UserMixin, Model):
     class Meta:
         database = DATABASE
 
+
 class Car(Model):
     name = CharField()
     make = CharField()
@@ -28,6 +35,7 @@ class Car(Model):
     class Meta:
         database = DATABASE
 
+
 class Project(Model):
     title = CharField()
     date_begin = DateField(default=datetime.datetime.now)
@@ -38,6 +46,7 @@ class Project(Model):
 
     class Meta:
         database = DATABASE
+
 
 def initialize():
     DATABASE.connect()
