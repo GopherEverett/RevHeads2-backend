@@ -15,7 +15,7 @@ login_manager = LoginManager()
 app = Flask(__name__)
 
 app.config.update(
-    # SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_SAMESITE='None',
 )
 
