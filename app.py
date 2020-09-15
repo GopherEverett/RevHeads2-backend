@@ -45,11 +45,11 @@ def after_request(response):
     return response
 
 
-CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000', 'https://revheads.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')
-CORS(car, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(car, origins=['http://localhost:3000', 'https://revheads.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(car, url_prefix='/api/v1/cars')
-CORS(project, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(project, origins=['http://localhost:3000', 'https://revheads.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(project, url_prefix='/api/v1/projects')
 
 
