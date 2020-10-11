@@ -24,6 +24,7 @@ def get_all_cars_by_owner(ownerid):
     except models.DoesNotExist:
         return jsonify(data=[], status={"code": 401, "message": "Error getting the resources"})
 
+
 @car.route('/<id>', methods=["GET"])
 @login_required
 def get_one_car(id):

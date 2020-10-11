@@ -64,3 +64,11 @@ def get_one_builder(builderid):
     builder = models.User.get_by_id(builderid)
     print(builder.__dict__)
     return jsonify(data=model_to_dict(builder), status={"code": 200, "message": "Success"})
+
+@user.route('/builder/<builderid>', methods=["PUT"])
+@login_required
+def update_user(id):
+    payload = request.get_json()
+    query = models.User.update(**payload).where(models.User.id==id)
+    query.execute()
+    return jsonify(data=model_to_dict(models.User.get_by_id(id)), status={"code": 200, "message": "resource updated successfully"})
