@@ -70,7 +70,7 @@ def get_one_builder(builderid):
 def update_user(builderid):
     payload = request.get_json()
     # payload['email'] = payload['email'].lower()
-    payload['password'] = generate_password_hash(payload['password'])
+    # payload['password'] = generate_password_hash(payload['password'])
     query = models.User.update(**payload).where(models.User.id==builderid)
     query.execute()
     return jsonify(data=model_to_dict(models.User.get_by_id(builderid)), status={"code": 200, "message": "resource updated successfully"})
