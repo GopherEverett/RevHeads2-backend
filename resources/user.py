@@ -69,7 +69,7 @@ def get_one_builder(builderid):
 # @login_required
 def update_user(builderid):
     payload = request.get_json()
-    payload['email'] = payload['email'].lower()
+    # payload['email'] = payload['email'].lower()
     payload['password'] = generate_password_hash(payload['password'])
     query = models.User.update(**payload).where(models.User.id==builderid)
     query.execute()
