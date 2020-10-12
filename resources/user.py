@@ -75,7 +75,7 @@ def update_user(builderid):
     query.execute()
     return jsonify(data=model_to_dict(models.User.get_by_id(builderid)), status={"code": 200, "message": "resource updated successfully"})
 
-@user.route('/builer/<builderid>', methods=["DELETE"])
+@user.route('/builder/<builderid>', methods=["DELETE"])
 def delete_user(builderid):
     query = models.User.delete().where(models.User.id==builderid)
     query.execute()
