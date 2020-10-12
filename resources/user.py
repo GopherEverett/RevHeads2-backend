@@ -69,6 +69,14 @@ def get_one_builder(builderid):
 # @login_required
 def update_user(builderid):
     payload = request.get_json()
+    payload['email'] = payload['email'].lower()
+    payload['password'] = generate_password_hash(payload['password'])
     query = models.User.update(**payload).where(models.User.id==builderid)
     query.execute()
     return jsonify(data=model_to_dict(models.User.get_by_id(builderid)), status={"code": 200, "message": "resource updated successfully"})
+
+@user.route('/builer/<builderid>', methods=["DELETE"])
+def delete_user(builderid):
+    query = models.User.delete().where(models.User.id==builderid)
+    query.execute()
+    return jsonify(data='resource successfully deleted', status={"code": 200, "messsage": "resource deleted successfully"})
